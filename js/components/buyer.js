@@ -174,9 +174,11 @@ var Buyer = {
     },
 
     displayBuyModal: function(degree, pet, captcha) {
+        var D = ['普通','稀有','卓越','史诗','神话','传说'];
+
         var detail = '\
         <p>尝试购买：ID[<span>'+pet.id+'</span>],\
-        级别[<span>'+pet.rareDegree+'</span>],\
+        级别[<span>'+ D[pet.rareDegree] + '</span>],\
         价格[<font color="red">'+pet.amount+'</font>]</p>\
         <p>命中策略：等级[<span>'+degree.desc+'</span>],\
         最高价格[<font color="green">'+degree.buyAmount+'</font>]</p>\

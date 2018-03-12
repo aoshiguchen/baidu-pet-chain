@@ -5,7 +5,7 @@
 $(function(){
     setInterval(function(){
         Buyer.ShowPetsOnSale();
-    }, 2000);
+    }, Configurator.getOtherConf().refreshInterval.value);
 
     Buyer.InitBuyModal();
 

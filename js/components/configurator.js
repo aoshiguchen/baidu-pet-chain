@@ -3,33 +3,42 @@
  */
 
 var Configurator = {
+    defaultOtherConf: {
+        refreshInterval: {
+            name: '刷新间隔',
+            value: 2000
+        },
+    },
     defaultDegreeConf: [{
         desc: '普通',
-        buyAmount: 100,
+        buyAmount: 200,
         saleAmount: 0,
     },{
         desc: '稀有',
-        buyAmount: 100,
+        buyAmount: 400,
         saleAmount: 0,
     },{
         desc: '卓越',
-        buyAmount: 100,
+        buyAmount: 1000,
         saleAmount: 0,
     },{
         desc: '史诗',
-        buyAmount: 100,
+        buyAmount: 3000,
         saleAmount: 0,
     },{
         desc: '神话',
-        buyAmount: 100,
+        buyAmount: 6000,
         saleAmount: 0,
     },{
         desc: '传说',
-        buyAmount: 100,
+        buyAmount: 10000,
         saleAmount: 0,
     }],
 	getDegreeConf : function() {
         return Utils.getStorage("degreeConf", true) || Configurator.defaultDegreeConf;
+    },
+    getOtherConf : function(){
+        return Utils.getStorage("otherConf", true) || Configurator.defaultOtherConf;
     },
     displayDegreeConf : function() {
 		var degreeConf = Configurator.getDegreeConf();
@@ -41,6 +50,16 @@ var Configurator = {
                 </tr>';
         });
         $(th).appendTo($("#degreeConf"));
+
+        var otherConf = Configurator.getOtherConf();
+        var th = '';
+        $.each(otherConf,function(k, v) {
+            th += '<tr class="confItem">\
+                    <td><span>' + v.name + '</span> <input type="text" name="key" value="' + k + '" style="display:none;" /></td>\
+                    <td><input type="text" name="value" value="' + v.value + '" class="editBox input-large" /></td>\
+                </tr>';
+        });
+        $(th).appendTo($("#otherConf"));
     },
     saveDegreeConf : function() {
         $("#saveDegreeConf").click(function(){
@@ -56,6 +75,19 @@ var Configurator = {
             }
 			
             Utils.setStorage("degreeConf", degreeConf);
+
+            var otherConf = Configurator.getOtherConf();
+            var otherConfItems = $("#otherConf .confItem");
+            for (var i = otherConfItems.length - 1; i >= 0; i--) {
+                var item = otherConfItems[i];
+
+                var key = $(item).find("input[name=key]").val();
+                var value = $(item).find("input[name=value]").val();
+
+                otherConf[key].value = value;
+            }
+             Utils.setStorage("otherConf", otherConf);
+
             Alert.Success("保存成功！", 3);
         });
     },
